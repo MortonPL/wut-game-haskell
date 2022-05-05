@@ -6,5 +6,4 @@ module Cmd
 readCommand :: IO String
 readCommand = do
     putStr "> "
-    xs <- getLine
-    return xs
+    getLine
