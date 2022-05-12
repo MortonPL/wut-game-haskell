@@ -7,8 +7,6 @@ import Cmd
 import Control.Monad
 import Printer
 
--- note that the game loop may take the game state as
--- an argument, eg. gameLoop :: State -> IO ()
 gameLoop :: GameState -> IO GameState
 gameLoop state = do
   cmd <- Cmd.readCommand
@@ -17,4 +15,5 @@ gameLoop state = do
     _      -> do
       let (newGameState, message) = handleCommand state cmd
       printLines message
+      println (show (position (player newGameState)))  -- debug
       gameLoop newGameState

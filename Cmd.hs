@@ -39,6 +39,14 @@ data GameState = GameState
   , player :: Player
   }
 
+worldMap :: Level
+worldMap = Level
+  { size = (6, 6)
+  , tiles =
+    [ []
+    ]
+  }
+
 helpText :: [String]
 helpText =
   [ "Available commands are:"
@@ -71,8 +79,32 @@ commandToFunction cmd
   | cmd == "instructions"     = help
   | otherwise                 = invalidCmd
 
+movedText :: Direction -> String
+movedText dir = "  - Moved " ++ show dir
+
+notMovedText :: Direction -> String
+notMovedText dir = "  - No money to be made up " ++ show dir
+
+add :: (Int, Int) -> (Int, Int) -> (Int, Int)
+add (a1, b1) (a2, b2) = (a1 + a2, b1 + b2)
+
+dirToTuple :: Direction -> (Int, Int)
+dirToTuple North = (0, -1)
+dirToTuple South = (0, 1)
+dirToTuple East = (1, 0)
+dirToTuple West = (-1, 0)
+
 move :: Direction -> GameState -> (GameState, [String])
-move dir state = (state, ["Moved " ++ show dir])
+move dir state
+  | (dir == North && snd (position (player state)) == 0)
+    || (dir == South && snd (position (player state)) == snd (size worldMap) - 1)
+    || (dir == East && fst (position (player state)) == fst (size worldMap) - 1)
+    || (dir == West && fst (position (player state)) == 0)
+    = (state, [notMovedText dir])
+  | otherwise =
+    ( state { player = (player state) { position = position (player state) `add` dirToTuple dir } }
+    , [movedText dir]
+    )
 
 help :: GameState -> (GameState, [String])
 help state = (state, helpText)
