@@ -6,6 +6,7 @@ where
 import Control.Monad.State (State, StateT)
 import GHC.IO.Handle.Internals (flushBuffer)
 import System.IO (hFlush, stdout)
+import qualified Printer
 
 data Direction
   = North
@@ -53,7 +54,7 @@ gameState =
           }
     }
 
-type GameStateIO = StateT gameState IO (*)
+type GameStateIO = StateT GameState IO (*)
 
 readCommand :: IO String
 readCommand = do
@@ -61,7 +62,7 @@ readCommand = do
   hFlush stdout
   getLine
 
-handleCommand :: IO ()
+handleCommand :: IO Bool
 handleCommand = do
   cmd <- readCommand
   case cmd of
@@ -73,8 +74,16 @@ handleCommand = do
     "east" -> move East
     "w" -> move West
     "west" -> move West
-    _ -> print "Invalid command!"
+    "instructions" -> Printer.help
+    "quit" -> return False
+    _ -> invalidCmd
 
-move :: Direction -> IO ()
+move :: Direction -> IO Bool
 move dir = do
   print dir
+  return True
+
+invalidCmd :: IO Bool
+invalidCmd = do
+  print "Invalid command!"
+  return True

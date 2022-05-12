@@ -45,8 +45,10 @@ menu = printLines menuScreen
         "    quit  - Exit the game."
       ]
 
-help :: IO ()
-help = printLines helpScreen
+help :: IO Bool
+help = do
+  printLines helpScreen
+  return True
   where
     helpScreen =
       [ "Available commands are:",
