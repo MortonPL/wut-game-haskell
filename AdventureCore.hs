@@ -1,7 +1,7 @@
 module AdventureCore
-    (
-        gameLoop
-    ) where
+  ( gameLoop,
+  )
+where
 
 import Cmd
 import Printer
@@ -10,10 +10,5 @@ import Printer
 -- an argument, eg. gameLoop :: State -> IO ()
 gameLoop :: IO ()
 gameLoop = do
-    cmd <- Cmd.readCommand
-    case cmd of
-        "instructions" -> do Printer.help
-                             gameLoop
-        "quit" -> return ()
-        _ -> do Printer.println "Unknown command."
-                gameLoop
+  Cmd.handleCommand
+  gameLoop
