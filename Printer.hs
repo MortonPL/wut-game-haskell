@@ -2,6 +2,7 @@ module Printer
   ( splash,
     menu,
     help,
+    printLines,
     println,
   )
 where

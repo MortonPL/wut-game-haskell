@@ -1,12 +1,13 @@
 module Cmd
-  ( handleCommand,
+  ( handleCommand
+  , readCommand
+  , GameState (..)
+  , Level (..)
+  , Player (..)
   )
 where
 
-import Control.Monad.State (State, StateT)
-import GHC.IO.Handle.Internals (flushBuffer)
 import System.IO (hFlush, stdout)
-import qualified Printer
 
 data Direction
   = North
@@ -24,37 +25,33 @@ data Tile
   | Island String Merchant
 
 data Level = Level
-  { size :: (Int, Int),
-    tiles :: [[Tile]]
+  { size :: (Int, Int)
+  , tiles :: [[Tile]]
   }
 
 data Player = Player
-  { name :: String,
-    position :: (Int, Int)
+  { name :: String
+  , position :: (Int, Int)
   }
 
 data GameState = GameState
-  { level :: Level,
-    player :: Player
+  { level :: Level
+  , player :: Player
   }
 
-gameState =
-  GameState
-    { level =
-        Level
-          { size = (6, 6),
-            tiles =
-              [ []
-              ]
-          },
-      player =
-        Player
-          { name = "hahe",
-            position = (0, 0)
-          }
-    }
+helpText :: [String]
+helpText =
+  [ "Available commands are:"
+  , ""
+  , "instructions  -- to see these instructions."
+  , "quit          -- to end the game and quit."
+  , ""
+  ]
 
-type GameStateIO = StateT GameState IO (*)
+invalidCmdText :: [String]
+invalidCmdText =
+  [ "Invalid command"
+  ]
 
 readCommand :: IO String
 readCommand = do
@@ -62,28 +59,23 @@ readCommand = do
   hFlush stdout
   getLine
 
-handleCommand :: IO Bool
-handleCommand = do
-  cmd <- readCommand
-  case cmd of
-    "n" -> move North
-    "north" -> move North
-    "s" -> move South
-    "south" -> move South
-    "e" -> move East
-    "east" -> move East
-    "w" -> move West
-    "west" -> move West
-    "instructions" -> Printer.help
-    "quit" -> return False
-    _ -> invalidCmd
+handleCommand :: GameState -> String -> (GameState, [String])
+handleCommand state cmd = commandToFunction cmd state
 
-move :: Direction -> IO Bool
-move dir = do
-  print dir
-  return True
+commandToFunction :: String -> (GameState -> (GameState, [String]))
+commandToFunction cmd
+  | cmd `elem` ["n", "north"] = move North
+  | cmd `elem` ["s", "south"] = move South
+  | cmd `elem` ["e", "east"]  = move East
+  | cmd `elem` ["w", "west"]  = move West
+  | cmd == "instructions"     = help
+  | otherwise                 = invalidCmd
 
-invalidCmd :: IO Bool
-invalidCmd = do
-  print "Invalid command!"
-  return True
+move :: Direction -> GameState -> (GameState, [String])
+move dir state = (state, ["Moved " ++ show dir])
+
+help :: GameState -> (GameState, [String])
+help state = (state, helpText)
+
+invalidCmd :: GameState -> (GameState, [String])
+invalidCmd state = (state, invalidCmdText)
