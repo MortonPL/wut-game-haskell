@@ -35,15 +35,19 @@ data Player = Player
   }
 
 data GameState = GameState
-  { level :: Level
-  , player :: Player
+  { player :: Player
   }
 
 worldMap :: Level
 worldMap = Level
   { size = (6, 6)
   , tiles =
-    [ []
+    [ [ShallowWater   ShallowWater   ShallowWater   Island "Northstable Island" "Morshu"     ShallowWater   ShallowWater]
+    , [ShallowWater   DeepWater      DeepWater      DeepWater      DeepWater    ShallowWater]
+    , [ShallowWater   DeepWater      Island "Storm Reef" "Tem"     DeepWater    DeepWater    ShallowWater]
+    , [Island "White Tiger Island" "Daniel Jacks"   DeepWater      DeepWater    DeepWater    DeepWater      ShallowWater]
+    , [ShallowWater   DeepWater      DeepWater      DeepWater      DeepWater    ShallowWater]
+    , [ShallowWater   ShallowWater   ShallowWater   ShallowWater   Island       ShallowWater]
     ]
   }
 
