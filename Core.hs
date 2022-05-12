@@ -1,15 +1,16 @@
-module AdventureCore
+module Core
   ( gameLoop
   )
 where
 
-import Cmd
+import Types (GameState (..), Player (..))
+import Console (readCommand, printLines, println)
+import Cmd (handleCommand)
 import Control.Monad
-import Printer
 
 gameLoop :: GameState -> IO GameState
 gameLoop state = do
-  cmd <- Cmd.readCommand
+  cmd <- readCommand
   case cmd of
     "quit" -> return state
     _      -> do

@@ -1,75 +1,10 @@
 module Cmd
   ( handleCommand
-  , readCommand
-  , GameState (..)
-  , Level (..)
-  , Player (..)
   )
 where
 
-import System.IO (hFlush, stdout)
-
-data Direction
-  = North
-  | South
-  | West
-  | East
-  deriving (Eq, Show)
-
-data Merchant
-  = String
-
-data Tile
-  = ShallowWater
-  | DeepWater
-  | Island String Merchant
-
-data Level = Level
-  { size :: (Int, Int)
-  , tiles :: [[Tile]]
-  }
-
-data Player = Player
-  { name :: String
-  , position :: (Int, Int)
-  }
-
-data GameState = GameState
-  { player :: Player
-  }
-
-worldMap :: Level
-worldMap = Level
-  { size = (6, 6)
-  , tiles =
-    [ [ShallowWater,   ShallowWater,   ShallowWater,   Island "Northstable Island" "Morshu",       ShallowWater,   ShallowWater]
-    , [ShallowWater,   DeepWater,      DeepWater,      DeepWater,      DeepWater,    ShallowWater]
-    , [ShallowWater,   DeepWater,      Island "Storm Reef" "Tem",      DeepWater,    DeepWater,    ShallowWater]
-    , [Island "White Tiger Island" "Daniel Jacks",     DeepWater,      DeepWater,    DeepWater,    DeepWater,      ShallowWater]
-    , [ShallowWater,   DeepWater,      DeepWater,      DeepWater,      DeepWater,    ShallowWater]
-    , [ShallowWater,   ShallowWater,   ShallowWater,   ShallowWater,   Island "Bishop Rock Island" "Fred",         ShallowWater]
-    ]
-  }
-
-helpText :: [String]
-helpText =
-  [ "Available commands are:"
-  , ""
-  , "instructions  -- to see these instructions."
-  , "quit          -- to end the game and quit."
-  , ""
-  ]
-
-invalidCmdText :: [String]
-invalidCmdText =
-  [ "Invalid command"
-  ]
-
-readCommand :: IO String
-readCommand = do
-  putStr "> "
-  hFlush stdout
-  getLine
+import Types (GameState (..), Direction (..), Player (..), Level (..))
+import Data (worldMap, helpText, invalidCmdText)
 
 handleCommand :: GameState -> String -> (GameState, [String])
 handleCommand state cmd = commandToFunction cmd state
