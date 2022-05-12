@@ -47,7 +47,7 @@ worldMap = Level
     , [ShallowWater   DeepWater      Island "Storm Reef" "Tem"     DeepWater    DeepWater    ShallowWater]
     , [Island "White Tiger Island" "Daniel Jacks"   DeepWater      DeepWater    DeepWater    DeepWater      ShallowWater]
     , [ShallowWater   DeepWater      DeepWater      DeepWater      DeepWater    ShallowWater]
-    , [ShallowWater   ShallowWater   ShallowWater   ShallowWater   Island       ShallowWater]
+    , [ShallowWater   ShallowWater   ShallowWater   ShallowWater   Island "Bishop Rock Island" "Fred"       ShallowWater]
     ]
   }
 
