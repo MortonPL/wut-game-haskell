@@ -9,5 +9,9 @@ initGameState =
   Player
     { pl_name = "joe",
       pl_position = (0, 0),
-      pl_inventory = Inventory $ Map.fromList [("balls", 8), ("mercenary", 1)]
+      pl_inventory = Inventory $ Map.fromList
+      [ ("balls", 8)
+      , ("mercenary", 1)
+      , ("coin", 50)
+      ]
     }

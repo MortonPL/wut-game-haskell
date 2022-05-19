@@ -1,6 +1,6 @@
 module Main where
 
-import Commands (cmdHelp, cmdAppraise, cmdInvalid, cmdMove, cmdQuit, showInventory)
+import Commands (cmdHelp, cmdAppraise, cmdInvalid, cmdMove, cmdQuit, showInventory, cmdBuy, cmdSell)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
@@ -38,6 +38,8 @@ handleCommand = do
     c | c `elem` ["e", "east"] -> mve args c
     c | c `elem` ["w", "west"] -> mvw args c
     c | c `elem` ["s", "south"] -> mvs args c
+    c | c == "buy" -> buy args c
+    c | c == "sell" -> sel args c
     c | c `elem` ["h", "help"] -> hlp args c
     c | c `elem` ["i", "inventory"] -> inv args c
     c | c `elem` ["q", "quit"] -> qit args c
@@ -48,6 +50,8 @@ handleCommand = do
     mvs = noArgs $ cmdMove South
     mvw = noArgs $ cmdMove West
     mvn = noArgs $ cmdMove North
+    buy = xArgs 2 cmdBuy
+    sel = xArgs 2 cmdSell
     inv = noArgs showInventory
     hlp = noArgs cmdHelp
     qit = noArgs cmdQuit
