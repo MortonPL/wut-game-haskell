@@ -2,83 +2,103 @@ module Level where
 
 import Data.Map (Map, fromList)
 import qualified Data.Map as Map
-import DataTypes (
-  Level (Level, lv_size, lv_tiles), 
-  Merchant (Merchant, mc_name, mc_desc, mc_merchants, mc_selling, mc_buying), 
-  Tile (DeepWater, Island, ShallowWater))
+import DataTypes
+  ( Level (Level, lv_size, lv_tiles),
+    Merchant (Merchant, mc_buying, mc_desc, mc_merchants, mc_name, mc_selling),
+    Tile (DeepWater, Island, ShallowWater),
+  )
 
-mMorshu = Merchant
-  {
-    mc_name = "Morshu",
-    mc_desc = "Bomb, ropes, lamp oil. You want it? It's yours my friend.",
-    mc_merchants = "There are two other islands to the south-east.",
-    mc_selling = fromList
-    [ ("rum", 1.0)
-    , ("gunpowder", 1.0)
-    , ("blunderbuss", 1.0)
-    , ("ration", 1.0)
-    , ("banana", 1.0)],
-    mc_buying = fromList
-    [ ("rum", 0.9)
-    , ("gunpowder", 0.9)
-    , ("blunderbuss", 0.9)
-    , ("ration", 0.9)
-    , ("banana", 0.9)]
-  }
-mTem = Merchant
-  {
-    mc_name = "Tem",
-    mc_desc = "Tem go to colleg ye-ya!",
-    mc_merchants = "sail eestwardz",
-    mc_selling = fromList
-    [ ("rum", 1.4)
-    , ("gunpowder", 0.6)
-    , ("blunderbuss", 0.6)
-    , ("ration", 1.8)
-    , ("map_piece_1", 1.0)],
-    mc_buying = fromList
-    [ ("rum", 1.3)
-    , ("gunpowder", 0.5)
-    , ("blunderbuss", 0.5)
-    , ("ration", 0.7)
-    , ("banana", 1.1)]
-  }
-mDaniel = Merchant
-  {
-    mc_name = "Daniel Jacks",
-    mc_desc = "My business was ruined by those pirate folk...",
-    mc_merchants = "If you're brave enough, try east-northeast!",
-    mc_selling = fromList
-    [ ("rum", 1.2)
-    , ("gunpowder", 1.6)
-    , ("blunderbuss", 1.2)
-    , ("ration", 0.8)
-    , ("mercenary", 1.0)],
-    mc_buying = fromList
-    [ ("rum", 1.1)
-    , ("gunpowder", 1.5)
-    , ("blunderbuss", 1.1)
-    , ("ration", 0.7)
-    , ("banana", 1.3)]
-  }
-mFred = Merchant
-  {
-    mc_name = "Fred",
-    mc_desc = "Good evening.",
-    mc_merchants = "Other ships often take a course towards north...",
-    mc_selling = fromList
-    [ ("rum", 1.2)
-    , ("gunpowder", 1.4)
-    , ("blunderbuss", 1.2)
-    , ("ration", 1.0)
-    , ("mercenary", 0.8)],
-    mc_buying = fromList
-    [ ("rum", 1.1)
-    , ("gunpowder", 1.3)
-    , ("blunderbuss", 1.1)
-    , ("ration", 0.9)
-    , ("banana", 1.6)]
-  }
+mMorshu =
+  Merchant
+    { mc_name = "Morshu",
+      mc_desc = "Bomb, ropes, lamp oil. You want it? It's yours my friend.",
+      mc_merchants = "There are two other islands to the south-east.",
+      mc_selling =
+        fromList
+          [ ("rum", 1.0),
+            ("gunpowder", 1.0),
+            ("blunderbuss", 1.0),
+            ("ration", 1.0),
+            ("banana", 1.0)
+          ],
+      mc_buying =
+        fromList
+          [ ("rum", 0.9),
+            ("gunpowder", 0.9),
+            ("blunderbuss", 0.9),
+            ("ration", 0.9),
+            ("banana", 0.9)
+          ]
+    }
+
+mTem =
+  Merchant
+    { mc_name = "Tem",
+      mc_desc = "Tem go to colleg ye-ya!",
+      mc_merchants = "sail eestwardz",
+      mc_selling =
+        fromList
+          [ ("rum", 1.4),
+            ("gunpowder", 0.6),
+            ("blunderbuss", 0.6),
+            ("ration", 1.8),
+            ("map_piece_1", 1.0)
+          ],
+      mc_buying =
+        fromList
+          [ ("rum", 1.3),
+            ("gunpowder", 0.5),
+            ("blunderbuss", 0.5),
+            ("ration", 0.7),
+            ("banana", 1.1)
+          ]
+    }
+
+mDaniel =
+  Merchant
+    { mc_name = "Daniel Jacks",
+      mc_desc = "My business was ruined by those pirate folk...",
+      mc_merchants = "If you're brave enough, try east-northeast!",
+      mc_selling =
+        fromList
+          [ ("rum", 1.2),
+            ("gunpowder", 1.6),
+            ("blunderbuss", 1.2),
+            ("ration", 0.8),
+            ("mercenary", 1.0)
+          ],
+      mc_buying =
+        fromList
+          [ ("rum", 1.1),
+            ("gunpowder", 1.5),
+            ("blunderbuss", 1.1),
+            ("ration", 0.7),
+            ("banana", 1.3)
+          ]
+    }
+
+mFred =
+  Merchant
+    { mc_name = "Fred",
+      mc_desc = "Good evening.",
+      mc_merchants = "Other ships often take a course towards north...",
+      mc_selling =
+        fromList
+          [ ("rum", 1.2),
+            ("gunpowder", 1.4),
+            ("blunderbuss", 1.2),
+            ("ration", 1.0),
+            ("mercenary", 0.8)
+          ],
+      mc_buying =
+        fromList
+          [ ("rum", 1.1),
+            ("gunpowder", 1.3),
+            ("blunderbuss", 1.1),
+            ("ration", 0.9),
+            ("banana", 1.6)
+          ]
+    }
 
 _S = ShallowWater
 
@@ -115,14 +135,14 @@ itemValues =
 itemPirAtt :: Map String Int
 itemPirAtt =
   Map.fromList
-    [ ("balls", -40)
+    [ ("balls", 40)
     ]
 
 pirAttMin :: Int
-pirAttMin = 300
+pirAttMin = 0
 
 pirAttMax :: Int
-pirAttMax = 300
+pirAttMax = 10
 
 pirMaxProb :: Float
-pirMaxProb = 50.0
+pirMaxProb = 0.5

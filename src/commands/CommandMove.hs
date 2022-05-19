@@ -107,8 +107,8 @@ defendFromPirates :: StateT GameState IO ()
 defendFromPirates = do
   state <- get
   let inv = pl_inventory state
-  let inv = update inv "mercenary" $ -1
-  put state {pl_inventory = inv}
+  let ninv = update inv "mercenary" $ -1
+  put state {pl_inventory = ninv}
   liftIO $
     printLines
       [ "Your brave mercenaries have protected you.",
@@ -119,8 +119,8 @@ loseToPirates :: StateT GameState IO ()
 loseToPirates = do
   state <- get
   let inv = pl_inventory state
-  let inv = halveItems inv
-  put state {pl_inventory = inv}
+  let ninv = halveItems inv
+  put state {pl_inventory = ninv}
   liftIO $
     printLines
       [ "They stole half of your possessions.",

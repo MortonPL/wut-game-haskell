@@ -24,7 +24,7 @@ evaluate (Inventory invMap) =
 -- [HELPER] - Calculates the pirate attraction of a single item type
 evaluateItem :: (String, Int) -> Int
 evaluateItem (item, count) =
-  itemPirAtt ! item * count
+  Data.Maybe.fromMaybe 0 (Map.lookup item itemPirAtt) * count
 
 -- [HELPER] - Halves all items in the inventory
 halveItems :: Inventory -> Inventory
