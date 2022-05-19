@@ -14,14 +14,8 @@ data Merchant = Merchant
   { mc_name :: String,
     mc_desc :: String,
     mc_merchants :: String,
-    mc_selling :: [PriceTag],
-    mc_buying :: [PriceTag]
-  }
-  deriving (Eq)
-
-data PriceTag = PriceTag
-  { pt_name :: String,
-    pt_costmod :: Float
+    mc_selling :: Map String Float,
+    mc_buying :: Map String Float
   }
   deriving (Eq)
 
