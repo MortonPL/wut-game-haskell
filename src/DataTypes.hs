@@ -13,7 +13,8 @@ data Merchant = Merchant
   { mc_name :: String,
     mc_desc :: String,
     mc_merchants :: String,
-    mc_wares :: [PriceTag]
+    mc_selling :: [PriceTag],
+    mc_buying :: [PriceTag]
   }
   deriving (Eq)
 
