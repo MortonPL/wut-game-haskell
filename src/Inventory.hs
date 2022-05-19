@@ -14,7 +14,9 @@ count (Inventory invMap) item =
 -- [INTERFACE] - Adds the item count to inventory
 update :: Inventory -> String -> Int -> Inventory
 update (Inventory invMap) item count =
-  Inventory $ Map.adjust (+ count) item invMap
+  if Map.member item invMap
+    then Inventory $ Map.adjust (+ count) item invMap
+    else Inventory $ Map.insert item count invMap
 
 -- [INTERFACE] - Calculates the pirate attraction of the inventory
 evaluate :: Inventory -> Int
