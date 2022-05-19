@@ -45,8 +45,6 @@ move dir = do
     South -> if snd (pl_position state) == snd (lv_size level) - 1 then failMove dir else succMove dir
     East -> if fst (pl_position state) == fst (lv_size level) - 1 then failMove dir else succMove dir
     West -> if fst (pl_position state) == 0 then failMove dir else succMove dir
-  tryStorm dir
-  tryPirates
   return True
 
 failMove :: Direction -> StateT GameState IO ()
@@ -57,6 +55,8 @@ succMove :: Direction -> StateT GameState IO ()
 succMove dir = do
   movePlayer $ dir2Tuple dir
   liftIO $ println $ "  - Moved " ++ show dir
+  tryStorm dir
+  tryPirates
 
 movePlayer :: (Int, Int) -> StateT GameState IO ()
 movePlayer vec = do
