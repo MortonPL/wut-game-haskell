@@ -22,6 +22,7 @@ executable ahoy
     , DataTypes
     , GameState
     , Level
+    , Inventory
 
     , CommandMove
 
