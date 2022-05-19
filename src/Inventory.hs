@@ -8,7 +8,12 @@ newtype Inventory = Inventory (Map String Int)
 
 instance Show Inventory where
   show (Inventory invMap) =
-    unlines $ "" : map showItem (filter countFilter (Map.toList invMap))
+    if not $ null items then
+      unlines $ "Your pockets are full with:" : map showItem items
+    else
+      "Your pockets are full of hopes and dreams."
+    where
+      items = filter countFilter (Map.toList invMap)
 
 countFilter :: (String, Int) -> Bool
 countFilter x =
@@ -16,7 +21,7 @@ countFilter x =
 
 showItem :: (String, Int) -> String
 showItem (item, count) =
-  show item ++ show count
+  " - " ++ show count ++ " of " ++ show item
 
 count :: Inventory -> String -> Int
 count (Inventory invMap) item =
@@ -25,3 +30,7 @@ count (Inventory invMap) item =
 update :: Inventory -> String -> Int -> Inventory
 update (Inventory invMap) item count =
   Inventory $ Map.adjust (+ count) item invMap
+
+evaluate :: Inventory -> Map String Int -> Int
+evaluate (Inventory invMap) valueMap =
+  0
