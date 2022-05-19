@@ -3,7 +3,7 @@ module Commands where
 import CommandMove (move)
 import Control.Monad.State
   ( MonadIO (liftIO),
-    StateT,
+    StateT, MonadState (get)
   )
 import DataTypes (Direction, GameState, Player (pl_inventory))
 import Level (level)

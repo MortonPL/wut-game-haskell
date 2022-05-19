@@ -10,5 +10,5 @@ initGameState =
   Player
     { pl_name = "joe",
       pl_position = (0, 0),
-      pl_inventory = Inventory Map.empty
+      pl_inventory = Inventory $ Map.fromList [("balls", 2), ("in your:", 0)]
     }

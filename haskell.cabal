@@ -23,9 +23,7 @@ executable ahoy
     , GameState
     , Level
     , Inventory
-
     , CommandMove
-
     , Printer
     , Random
   hs-source-dirs:
