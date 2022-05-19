@@ -4,7 +4,7 @@ import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import System.IO (hFlush, stdout)
 
-import Commands (cmdHelp, cmdInvalid, cmdMove, cmdQuit)
+import Commands (cmdHelp, cmdInvalid, cmdMove, cmdQuit, showInventory)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
 import GameState (initGameState)
 import Printer (menu, println, splash)
@@ -34,6 +34,7 @@ handleCommand = do
   case cmd of
     c | c `elem` ["e", "east"] -> cmdMove East
     c | c `elem` ["h", "help"] -> cmdHelp
+    c | c `elem` ["i", "inventory"] -> showInventory
     c | c `elem` ["n", "north"] -> cmdMove North
     c | c `elem` ["q", "quit"] -> cmdQuit
     c | c `elem` ["s", "south"] -> cmdMove South

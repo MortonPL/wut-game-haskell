@@ -37,4 +37,5 @@ executable ahoy
     , mtl
     , random
     , microlens-platform
+    , containers
   default-language: Haskell2010
