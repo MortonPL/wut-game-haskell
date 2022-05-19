@@ -2,8 +2,7 @@ module GameState where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
-import DataTypes (Player (Player, pl_inventory, pl_name, pl_position))
-import Inventory (Inventory (Inventory))
+import DataTypes (Inventory (Inventory), Player (Player, pl_inventory, pl_name, pl_position))
 
 initGameState :: Player
 initGameState =

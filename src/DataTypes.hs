@@ -1,6 +1,7 @@
 module DataTypes where
 
-import Inventory (Inventory)
+import Data.Map (Map)
+import qualified Data.Map as Map
 
 data Direction
   = North
@@ -34,6 +35,27 @@ data Level = Level
   { lv_size :: (Int, Int),
     lv_tiles :: [[Tile]]
   }
+
+newtype Inventory = Inventory (Map String Int)
+
+-- [SHOW]
+instance Show Inventory where
+  show (Inventory invMap) =
+    if not $ null items
+      then unlines $ "Your pockets are full with:" : map showItem items
+      else "Your pockets are full of hopes and dreams."
+    where
+      items = filter countFilter (Map.toList invMap)
+
+-- [HELPER] - Filters only items with positive counts
+countFilter :: (String, Int) -> Bool
+countFilter x =
+  snd x > 0
+
+-- [HELPER] - Generates a string for a single item type
+showItem :: (String, Int) -> String
+showItem (item, count) =
+  " - " ++ show count ++ " of " ++ show item
 
 data Player = Player
   { pl_name :: String,
