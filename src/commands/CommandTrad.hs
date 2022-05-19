@@ -1,17 +1,36 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module CommandTrad (sell, buy) where
 
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
-import DataTypes (GameState, Player (pl_inventory), Inventory)
+import Data.Function ((&))
+import Data.Map ((!))
+import DataTypes (GameState, Player (pl_inventory, pl_position), Inventory, Level (lv_tiles), Merchant (mc_selling, mc_buying), Tile (Island))
 import Inventory (count, update)
 import Printer (println)
-import Data.Function ((&))
+import Level (itemValues, level)
+import qualified Data.Map as Map
 
 countCoins :: Inventory -> Int
 countCoins invMap = count invMap "coin"
 
 updateCoins :: Inventory -> Int -> Inventory
 updateCoins invMap = update invMap "coin"
+
+toMerchant :: (Int, Int) -> Maybe Merchant
+toMerchant currentPosition =
+  case currentField of
+    Island _ m -> Just m
+    _ -> Nothing
+  where currentField = lv_tiles level !! fst currentPosition !! snd currentPosition
+
+buys :: Merchant -> String -> Bool
+buys merchant itemName = case Map.lookup itemName (mc_buying merchant) of
+  Just _ -> True
+  _ -> False
+
+sells :: Merchant -> String -> Bool
+sells merchant itemName = case Map.lookup itemName (mc_selling merchant) of
+  Just _ -> True
+  _ -> False
 
 textNotEnoughItems :: String -> String
 textNotEnoughItems itemName = "There is not enough '" ++ itemName ++ "' on you."
@@ -34,16 +53,34 @@ textCannotBuy itemName = "You can't buy '" ++ itemName ++ "' here."
 sell :: String -> Int -> StateT GameState IO Bool
 sell itemName amount = do
   state <- get
-  -- TODO: merchant check
-  let oldInv = pl_inventory state
-  let currentAmount = count oldInv itemName
+  let maybeMerchant = toMerchant $ pl_position state
+  case maybeMerchant of
+    Nothing -> do
+      liftIO $ println $ textCannotSell itemName
+      return True
+    Just m | not (buys m itemName) -> do
+      liftIO $ println $ textCannotSell itemName
+      return True
+    Just m -> sellToMerchant m itemName amount
+
+sellToMerchant :: Merchant -> String -> Int -> StateT GameState IO Bool
+sellToMerchant merchant itemName amount = do
+  state <- get
+  let currentAmount = count (pl_inventory state) itemName
   case amount of
     i | i > currentAmount -> do
       liftIO $ println $ textNotEnoughItems itemName
       return True
-  let basePrice = 50  -- TODO
-  let priceModifier = 1.1  -- TODO
-  let totalPrice = amount * round (basePrice * priceModifier)
+    _ -> do
+      let basePrice = fromIntegral (itemValues ! itemName)
+      let priceModifier = mc_buying merchant ! itemName
+      let totalPrice = amount * round (basePrice * priceModifier)
+      return True
+
+updateInvOnSellSucc :: String -> Int -> Int -> StateT GameState IO Bool
+updateInvOnSellSucc itemName amount totalPrice = do
+  state <- get
+  let oldInv = pl_inventory state
   let partiallyUpdatedInv = update oldInv itemName (-amount)
   let updatedInv = updateCoins partiallyUpdatedInv totalPrice
   put state {pl_inventory = updatedInv}
@@ -53,16 +90,33 @@ sell itemName amount = do
 buy :: String -> Int -> StateT GameState IO Bool
 buy itemName amount = do
   state <- get
-  -- TODO: merchant check
-  let basePrice = 50  -- TODO
-  let priceModifier = 1.1  -- TODO
-  let totalPrice = amount * round (basePrice * priceModifier)
-  let oldInv = pl_inventory state
-  let currentMoney = countCoins oldInv
+  let maybeMerchant = toMerchant $ pl_position state
+  case maybeMerchant of
+    Nothing -> do
+      liftIO $ println $ textCannotSell itemName
+      return True
+    Just m | not (sells m itemName) -> do
+      liftIO $ println $ textCannotSell itemName
+      return True
+    Just m -> buyFromMerchant m itemName amount
+
+buyFromMerchant :: Merchant -> String -> Int -> StateT GameState IO Bool
+buyFromMerchant merchant itemName amount = do
+  state <- get
+  let basePrice = fromIntegral (itemValues ! itemName)
+  let priceModifier = mc_selling merchant ! itemName
+  let totalPrice = amount * round (priceModifier * basePrice)
+  let currentMoney = countCoins (pl_inventory state)
   case totalPrice of
     i | i > currentMoney -> do
       liftIO $ println textNotEnoughMoney
       return True
+    _ -> updateInvOnBuySucc itemName amount totalPrice
+
+updateInvOnBuySucc :: String -> Int -> Int -> StateT GameState IO Bool
+updateInvOnBuySucc itemName amount totalPrice = do
+  state <- get
+  let oldInv = pl_inventory state
   let partiallyUpdatedInv = updateCoins oldInv (-totalPrice)
   let updatedInv = update partiallyUpdatedInv itemName amount
   put state {pl_inventory = updatedInv}

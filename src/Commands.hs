@@ -20,11 +20,17 @@ cmdInvalid = do
 cmdMove :: Direction -> StateT GameState IO Bool
 cmdMove = move
 
-cmdSell :: String -> Int -> StateT GameState IO Bool
-cmdSell = sell
+cmdSell :: [String] -> StateT GameState IO Bool
+cmdSell args = sell itemName amount
+  where
+    itemName = head args
+    amount = read (args !! 1)
 
-cmdBuy :: String -> Int -> StateT GameState IO Bool
-cmdBuy = buy
+cmdBuy :: [String] -> StateT GameState IO Bool
+cmdBuy args = buy itemName amount
+  where
+    itemName = head args
+    amount = read (args !! 1)
 
 cmdAppraise :: [String] -> StateT GameState IO Bool
 cmdAppraise args = appraise $ head args
