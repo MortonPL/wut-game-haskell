@@ -75,7 +75,7 @@ sellToMerchant merchant itemName amount = do
       let basePrice = fromIntegral (itemValues ! itemName)
       let priceModifier = mc_buying merchant ! itemName
       let totalPrice = amount * round (basePrice * priceModifier)
-      return True
+      updateInvOnSellSucc itemName amount totalPrice
 
 updateInvOnSellSucc :: String -> Int -> Int -> StateT GameState IO Bool
 updateInvOnSellSucc itemName amount totalPrice = do
@@ -93,10 +93,10 @@ buy itemName amount = do
   let maybeMerchant = toMerchant $ pl_position state
   case maybeMerchant of
     Nothing -> do
-      liftIO $ println $ textCannotSell itemName
+      liftIO $ println $ textCannotBuy itemName
       return True
     Just m | not (sells m itemName) -> do
-      liftIO $ println $ textCannotSell itemName
+      liftIO $ println $ textCannotBuy itemName
       return True
     Just m -> buyFromMerchant m itemName amount
 
