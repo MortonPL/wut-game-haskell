@@ -1,6 +1,6 @@
 module Main where
 
-import Commands (cmdHelp, cmdInvalid, cmdMove, cmdQuit, showInventory)
+import Commands (cmdHelp, cmdAppraise, cmdInvalid, cmdMove, cmdQuit, showInventory)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
@@ -34,13 +34,14 @@ handleCommand = do
   let cmd = head input
   let args = tail input
   case cmd of
-    c | c `elem` ["n", "north"] -> mvn c args
-    c | c `elem` ["e", "east"] -> mve c args
-    c | c `elem` ["w", "west"] -> mvw c args
-    c | c `elem` ["s", "south"] -> mvs c args
-    c | c `elem` ["h", "help"] -> hlp c args
-    c | c `elem` ["i", "inventory"] -> inv c args
-    c | c `elem` ["q", "quit"] -> qit c args
+    c | c `elem` ["n", "north"] -> mvn args c
+    c | c `elem` ["e", "east"] -> mve args c
+    c | c `elem` ["w", "west"] -> mvw args c
+    c | c `elem` ["s", "south"] -> mvs args c
+    c | c `elem` ["h", "help"] -> hlp args c
+    c | c `elem` ["i", "inventory"] -> inv args c
+    c | c `elem` ["q", "quit"] -> qit args c
+    c | c `elem` ["a", "appraise"] -> ins args c
     _ -> cmdInvalid
   where
     mve = noArgs $ cmdMove East
@@ -50,17 +51,18 @@ handleCommand = do
     inv = noArgs showInventory
     hlp = noArgs cmdHelp
     qit = noArgs cmdQuit
+    ins = xArgs 1 cmdAppraise
 
-noArgs :: StateT GameState IO Bool -> String -> [String] -> StateT GameState IO Bool
-noArgs func cmd args = do
+noArgs :: StateT GameState IO Bool -> [String] -> String -> StateT GameState IO Bool
+noArgs func args cmd = do
   if null args
     then func
     else do
       liftIO $ println $ "Command `" ++ cmd ++ "` does not take any arguments!"
       return True
 
-xArgs :: ([String] -> StateT GameState IO Bool) -> String -> [String] -> Int -> StateT GameState IO Bool
-xArgs func cmd args expected = do
+xArgs :: Int -> ([String] -> StateT GameState IO Bool) -> [String] -> String -> StateT GameState IO Bool
+xArgs expected func args cmd = do
   if length args == expected
     then func args
     else do

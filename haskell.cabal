@@ -25,6 +25,8 @@ executable ahoy
     , Inventory
     , CommandMove
     , CommandTrad
+    , CommandAppr
+    , CommandLook
     , Printer
     , Random
   hs-source-dirs:

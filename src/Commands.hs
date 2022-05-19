@@ -1,11 +1,11 @@
 module Commands where
 
-import Control.Monad.State (MonadIO (liftIO), StateT, MonadState (get, put))
+import CommandAppr (appraise)
+import CommandMove (move)
+import CommandTrad (buy, sell)
+import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
 import DataTypes (Direction, GameState, Player (pl_inventory))
 import Printer
-import CommandMove (move)
-import CommandTrad (sell, buy)
-
 
 cmdHelp :: StateT GameState IO Bool
 cmdHelp = do
@@ -25,6 +25,9 @@ cmdSell = sell
 
 cmdBuy :: String -> Int -> StateT GameState IO Bool
 cmdBuy = buy
+
+cmdAppraise :: [String] -> StateT GameState IO Bool
+cmdAppraise args = appraise $ head args
 
 showInventory :: StateT GameState IO Bool
 showInventory = do
