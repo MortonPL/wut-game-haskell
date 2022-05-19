@@ -1,63 +1,67 @@
 module Level where
 
-import DataTypes (Level (Level, lv_size, lv_tiles), Merchant (Merchant), Tile (DeepWater, Island, ShallowWater))
+import DataTypes (
+  Level (Level, lv_size, lv_tiles), 
+  Merchant (Merchant), 
+  PriceTag (PriceTag), 
+  Tile (DeepWater, Island, ShallowWater))
 
 mMorshu = Merchant
   "Morshu"
   "Bomb, ropes, lamp oil. You want it? It's yours my friend."
   "There are two other islands to the south-east."
-  [ ["rum", 1.0]
-  , ["gunpowder", 1.0]
-  , ["blunderbuss", 1.0]
-  , ["ration", 1.0]
-  , ["banana", 1.0]]
-  [ ["rum", 0.9]
-  , ["gunpowder", 0.9]
-  , ["blunderbuss", 0.9]
-  , ["ration", 0.9]
-  , ["banana", 0.9]]
+  [ PriceTag "rum" 1.0
+  , PriceTag "gunpowder" 1.0
+  , PriceTag "blunderbuss" 1.0
+  , PriceTag "ration" 1.0
+  , PriceTag "banana" 1.0]
+  [ PriceTag "rum" 0.9
+  , PriceTag "gunpowder" 0.9
+  , PriceTag "blunderbuss" 0.9
+  , PriceTag "ration" 0.9
+  , PriceTag "banana" 0.9]
 mTem = Merchant
   "Tem"
   "Tem go to colleg ye-ya!"
   "sail eestwardz"
-  [ ["rum", 1.4]
-  , ["gunpowder", 0.6]
-  , ["blunderbuss", 0.6]
-  , ["ration", 1.8]
-  , ["map_piece_1", 1.0]]
-  [ ["rum", 1.3]
-  , ["gunpowder", 0.5]
-  , ["blunderbuss", 0.5]
-  , ["ration", 0.7]
-  , ["banana", 1.1]]
+  [ PriceTag "rum" 1.4
+  , PriceTag "gunpowder" 0.6
+  , PriceTag "blunderbuss" 0.6
+  , PriceTag "ration" 1.8
+  , PriceTag "map_piece_1" 1.0]
+  [ PriceTag "rum" 1.3
+  , PriceTag "gunpowder" 0.5
+  , PriceTag "blunderbuss" 0.5
+  , PriceTag "ration" 0.7
+  , PriceTag "banana" 1.1]
 mDaniel = Merchant
   "Daniel Jacks"
   "My business was ruined by those pirate folk..."
   "If you're brave enough, try east-northeast!"
-  [ ["rum", 1.2]
-  , ["gunpowder", 1.6]
-  , ["blunderbuss", 1.2]
-  , ["ration", 0.8]
-  , ["mercenary", 1.0]]
-  [ ["rum", 1.1]
-  , ["gunpowder", 1.5]
-  , ["blunderbuss", 1.1]
-  , ["ration", 0.7]
-  , ["banana", 1.3]]
+  [ PriceTag "rum" 1.2
+  , PriceTag "gunpowder" 1.6
+  , PriceTag "blunderbuss" 1.2
+  , PriceTag "ration" 0.8
+  , PriceTag "mercenary" 1.0]
+  [ PriceTag "rum" 1.1
+  , PriceTag "gunpowder" 1.5
+  , PriceTag "blunderbuss" 1.1
+  , PriceTag "ration" 0.7
+  , PriceTag "banana" 1.3]
 mFred = Merchant
   "Fred"
   "Good evening."
   "Other ships often take a course towards north..."
-  [ ["rum", 1.2]
-  , ["gunpowder", 1.4]
-  , ["blunderbuss", 1.2]
-  , ["ration", 1.0]
-  , ["mercenary", 0.8]]
-  [ ["rum", 1.1]
-  , ["gunpowder", 1.3]
-  , ["blunderbuss", 1.1]
-  , ["ration", 0.9]
-  , ["banana", 1.6]]
+  [ PriceTag "rum" 1.2
+  , PriceTag "gunpowder" 1.4
+  , PriceTag "blunderbuss" 1.2
+  , PriceTag "ration" 1.0
+  , PriceTag "mercenary" 0.8]
+  [ PriceTag "rum" 1.1
+  , PriceTag "gunpowder" 1.3
+  , PriceTag "blunderbuss" 1.1
+  , PriceTag "ration" 0.9
+  , PriceTag "banana" 1.6]
 
 _S = ShallowWater
 _D = DeepWater
