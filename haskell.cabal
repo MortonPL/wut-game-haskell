@@ -24,6 +24,7 @@ executable ahoy
     , Level
     , Inventory
     , CommandMove
+    , CommandTrad
     , Printer
     , Random
   hs-source-dirs:

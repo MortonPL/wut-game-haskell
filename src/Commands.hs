@@ -1,13 +1,10 @@
 module Commands where
 
-import CommandMove (move)
-import Control.Monad.State
-  ( MonadIO (liftIO),
-    StateT, MonadState (get)
-  )
+import Control.Monad.State (MonadIO (liftIO), StateT, MonadState (get, put))
 import DataTypes (Direction, GameState, Player (pl_inventory))
-import Level (level)
 import Printer
+import CommandMove (move)
+import CommandTrad (sell, buy)
 
 
 cmdHelp :: StateT GameState IO Bool
@@ -22,6 +19,12 @@ cmdInvalid = do
 
 cmdMove :: Direction -> StateT GameState IO Bool
 cmdMove = move
+
+cmdSell :: String -> Int -> StateT GameState IO Bool
+cmdSell = sell
+
+cmdBuy :: String -> Int -> StateT GameState IO Bool
+cmdBuy = buy
 
 showInventory :: StateT GameState IO Bool
 showInventory = do
