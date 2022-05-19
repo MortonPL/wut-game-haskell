@@ -29,4 +29,4 @@ evaluateItem (item, count) =
 -- [HELPER] - Halves all items in the inventory
 halveItems :: Inventory -> Inventory
 halveItems (Inventory invMap) =
-  Inventory $ Map.map (div 2) invMap
+  Inventory $ Map.map (`div` 2) invMap

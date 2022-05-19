@@ -35,9 +35,9 @@ newtype Inventory = Inventory (Map String Int)
 -- [SHOW]
 instance Show Inventory where
   show (Inventory invMap) =
-    if not $ null items
-      then unlines $ "Your pockets are full with:" : map showItem items
-      else "Your pockets are full of hopes and dreams."
+    if null items
+      then "Your pockets are full of hopes and dreams."
+      else unlines $ "Your pockets are full with:" : map showItem items
     where
       items = filter countFilter (Map.toList invMap)
 

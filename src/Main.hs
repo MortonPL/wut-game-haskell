@@ -40,3 +40,6 @@ handleCommand = do
     c | c `elem` ["s", "south"] -> cmdMove South
     c | c `elem` ["w", "west"] -> cmdMove West
     _ -> cmdInvalid
+
+--noArg :: Int -> StateT GameState IO Bool
+
