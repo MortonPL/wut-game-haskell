@@ -2,8 +2,8 @@
 module CommandTrad (sell, buy) where
 
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
-import DataTypes (GameState, Player (pl_inventory))
-import Inventory (count, update, Inventory)
+import DataTypes (GameState, Player (pl_inventory), Inventory)
+import Inventory (count, update)
 import Printer (println)
 import Data.Function ((&))
 
