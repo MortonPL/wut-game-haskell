@@ -12,9 +12,7 @@ initGameState =
       pl_inventory =
         Inventory $
           Map.fromList
-            [ ("mercenary", 1),
-              ("coin", 50),
-              --("map_piece_1", 1),
-              --("map_piece_2", 1)
+            [ ("mercenary", 10),
+              ("coin", 500000)
             ]
     }
