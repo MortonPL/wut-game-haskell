@@ -1,8 +1,9 @@
 module Main where
 
-import Commands (cmdAppraise, cmdAsk, cmdBuy, cmdHelp, cmdInvalid, cmdInventory, cmdLook, cmdMove, cmdQuit, cmdSell)
+import Commands (cmdAppraise, cmdAsk, cmdBuy, cmdHelp, cmdInvalid, cmdInventory, cmdLook, cmdMove, cmdQuit, cmdSell, cmdSave, cmdLoad,)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
+
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
 import GameState (initGameState)
 import Printer (menu, println, splash)
@@ -12,7 +13,6 @@ import System.IO (hFlush, stdout)
 main :: IO ()
 main = do
   Printer.splash
-  Printer.menu
   liftIO (evalStateT gameLoop initGameState)
 
 -- [HELPER] - Performs the game loop until terminated by `quit` command.
@@ -36,18 +36,20 @@ handleCommand = do
   let cmd = head input
   let args = tail input
   case cmd of
-    c | c `elem` ["n", "north"] -> mvn args c
-    c | c `elem` ["e", "east"] -> mve args c
-    c | c `elem` ["w", "west"] -> mvw args c
-    c | c `elem` ["s", "south"] -> mvs args c
-    c | c == "buy" -> buy args c
-    c | c == "sell" -> sel args c
-    c | c == "ask" -> ask args c
-    c | c `elem` ["h", "help"] -> hlp args c
+    c | c `elem` ["n", "north"]     -> mvn args c
+    c | c `elem` ["e", "east"]      -> mve args c
+    c | c `elem` ["w", "west"]      -> mvw args c
+    c | c `elem` ["s", "south"]     -> mvs args c
+    c | c `elem` ["b", "buy"]       -> buy args c
+    c | c `elem` ["z", "sell"]      -> sel args c
+    c | c `elem` ["k", "ask"]       -> ask args c
+    c | c `elem` ["h", "help"]      -> hlp args c
     c | c `elem` ["i", "inventory"] -> inv args c
-    c | c `elem` ["q", "quit"] -> qit args c
-    c | c `elem` ["a", "appraise"] -> ins args c
-    c | c `elem` ["l", "look"] -> lok args c
+    c | c `elem` ["q", "quit"]      -> qit args c
+    c | c `elem` ["a", "appraise"]  -> ins args c
+    c | c `elem` ["l", "look"]      -> lok args c
+    c | c `elem` ["v", "save"]      -> sav args c
+    c | c `elem` ["d", "load"]      -> lod args c
     _ -> cmdInvalid
   where
     mve = noArgs $ cmdMove East
@@ -62,6 +64,8 @@ handleCommand = do
     ins = xArgs 1 cmdAppraise
     lok = noArgs cmdLook
     ask = xArgs 2 cmdAsk
+    sav = xArgs 1 cmdSave
+    lod = xArgs 1 cmdLoad
 
 -- [HELPER] - Validates argument count for 0-argument commands.
 noArgs :: StateT GameState IO Bool -> [String] -> String -> StateT GameState IO Bool

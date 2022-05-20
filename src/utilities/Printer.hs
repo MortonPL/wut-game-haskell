@@ -32,17 +32,6 @@ splash = printLines splashScreen
         ""
       ]
 
--- [HELPER] - Displays the main menu.
-menu :: IO ()
-menu = printLines menuScreen
-  where
-    menuScreen =
-      [ "    save  - Make a new save file.",
-        "    load  - Load a saved file.",
-        "    help  - List all commands.",
-        "    quit  - Exit the game."
-      ]
-
 -- [HELPER] - helper
 help :: IO Bool
 help = do
@@ -52,16 +41,19 @@ help = do
     helpScreen =
       [ "Available commands:",
         "",
-        "h/help        -- helper",
-        "l/look        -- look around",
-        "n/north       -- go north",
-        "e/east        -- go east",
-        "s/south       -- go south",
-        "w/west        -- go west",
-        "i/inventory   -- check inventory",
-        "a/appraise    -- appraise items",
-        "sell          -- sell items",
-        "buy           -- buy items",
-        "q/quit        -- end the game and quit",
+        "[H]elp        -- to see this list.",
+        "[L]ook        -- look around",
+        "[I]nventory   -- check inventory",
+        "[A]ppraise    -- appraise items",
+        "[N]orth       -- go north.",
+        "[E]ast        -- \" east.",
+        "[S]outh       -- \" south.",
+        "[W]est        -- \" west.",
+        "[B]uy         -- buy items",
+        "[Z]sell       -- sell items",
+        "as[K]         -- ask quesitons",
+        "sa[V]e <file> -- save the game.",
+        "loa[D] <file> -- load the game.",
+        "[Q]uit        -- end the game and quit.",
         ""
       ]

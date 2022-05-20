@@ -5,6 +5,7 @@ import CommandLook (look)
 import CommandMove (move)
 import CommandTrad (buy, sell)
 import CommandAskM (ask)
+import CommandSave (save, load)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
 import DataTypes (Direction, GameState, Player (pl_inventory))
 import Printer
@@ -74,3 +75,12 @@ cmdInventory = do
 cmdQuit :: StateT GameState IO Bool
 cmdQuit = do
   return False
+
+cmdSave :: [String] -> StateT GameState IO Bool
+cmdSave args = do
+  save $ head args
+  return True
+
+cmdLoad :: [String] -> StateT GameState IO Bool
+cmdLoad args = do
+  load $ head args

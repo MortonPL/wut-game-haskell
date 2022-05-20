@@ -29,6 +29,7 @@ executable ahoy
     , CommandAppr
     , CommandLook
     , CommandAskM
+    , CommandSave
     , Printer
     , Random
   hs-source-dirs:

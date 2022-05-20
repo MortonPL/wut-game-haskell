@@ -1,6 +1,7 @@
 module DataTypes where
 
 import Data.Map (Map)
+import Data.List (intersperse, intercalate)
 import qualified Data.Map as Map
 
 data Direction
@@ -51,6 +52,15 @@ countFilter x =
 showItem :: (String, Int) -> String
 showItem (item, count) =
   " - " ++ show count ++ " of " ++ show item
+
+newtype InventoryS = InventoryS Inventory
+
+instance Show InventoryS where
+  show (InventoryS (Inventory invMap)) = "[" ++ intercalate ", " (map showItemS $ Map.toList invMap) ++ "]"
+
+showItemS :: (String, Int) -> String
+showItemS (item, count) = 
+  "(" ++ show item ++ "," ++ show count ++ ")"
 
 data Player = Player
   { pl_name :: String,
