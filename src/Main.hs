@@ -1,6 +1,6 @@
 module Main where
 
-import Commands (cmdHelp, cmdAppraise, cmdInvalid, cmdMove, cmdQuit, showInventory, cmdBuy, cmdSell)
+import Commands (cmdAppraise, cmdBuy, cmdHelp, cmdInvalid, cmdLook, cmdMove, cmdQuit, cmdSell, showInventory)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
@@ -17,8 +17,6 @@ main = do
 gameLoop :: StateT GameState IO ()
 gameLoop = do
   continue <- handleCommand
-  state <- get
-  liftIO $ println $ show $ pl_position state
   when continue gameLoop
 
 readCommand :: IO String
@@ -44,6 +42,7 @@ handleCommand = do
     c | c `elem` ["i", "inventory"] -> inv args c
     c | c `elem` ["q", "quit"] -> qit args c
     c | c `elem` ["a", "appraise"] -> ins args c
+    c | c `elem` ["l", "look"] -> lok args c
     _ -> cmdInvalid
   where
     mve = noArgs $ cmdMove East
@@ -56,6 +55,7 @@ handleCommand = do
     hlp = noArgs cmdHelp
     qit = noArgs cmdQuit
     ins = xArgs 1 cmdAppraise
+    lok = noArgs cmdLook
 
 noArgs :: StateT GameState IO Bool -> [String] -> String -> StateT GameState IO Bool
 noArgs func args cmd = do

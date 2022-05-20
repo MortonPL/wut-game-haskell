@@ -8,7 +8,8 @@ import Control.Monad.State
     when,
   )
 import Data.Function
-import DataTypes (Direction (East, North, South, West), GameState, Inventory (Inventory), Level (lv_size, lv_tiles), Player (pl_inventory), Tile (DeepWater), pl_position)
+import Data.List
+import DataTypes (Direction (East, North, South, West), GameState, Inventory (Inventory), Level (lv_size, lv_tiles), Player (pl_inventory), Tile (DeepWater, NoTile), pl_position)
 import GHC.Float (int2Float)
 import Inventory (count, evaluate, halveItems, update)
 import Level (level, pirAttMax, pirAttMin, pirMaxProb)
@@ -65,7 +66,8 @@ movePlayer vec = do
 
 tryStorm :: Direction -> StateT GameState IO ()
 tryStorm dir = do
-  tile <- getTile
+  state <- get
+  tile <- getTile $ pl_position state
   rand <- randInt (0, 2)
   when ((tile == DeepWater) && (rand == 0)) $ doStorm dir
 
@@ -75,10 +77,12 @@ doStorm dir = do
   movePlayer $ dir2Tuple $ num2Dir (randRot + dir2Num dir)
   liftIO $ println "  - A storm hit you!"
 
-getTile :: StateT GameState IO Tile
-getTile = do
-  state <- get
-  return ((lv_tiles level !! fst (pl_position state)) !! snd (pl_position state))
+getTile :: (Int, Int) -> StateT GameState IO Tile
+getTile (x, y) = do
+  let (mx, my) = lv_size level
+  if x < 0 || mx <= x || y < 0 || my <= y
+    then return NoTile
+    else return ((lv_tiles level !! x) !! y)
 
 tryPirates :: StateT GameState IO ()
 tryPirates = do

@@ -1,6 +1,7 @@
 module Commands where
 
 import CommandAppr (appraise)
+import CommandLook (look)
 import CommandMove (move)
 import CommandTrad (buy, sell)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
@@ -34,6 +35,9 @@ cmdBuy args = buy itemName amount
 
 cmdAppraise :: [String] -> StateT GameState IO Bool
 cmdAppraise args = appraise $ head args
+
+cmdLook :: StateT GameState IO Bool
+cmdLook = look
 
 showInventory :: StateT GameState IO Bool
 showInventory = do

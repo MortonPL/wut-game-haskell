@@ -23,6 +23,7 @@ data Tile
   = ShallowWater
   | DeepWater
   | Island String Merchant
+  | NoTile
   deriving (Eq)
 
 data Level = Level
