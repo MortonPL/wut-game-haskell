@@ -4,6 +4,7 @@ import CommandAppr (appraise)
 import CommandLook (look)
 import CommandMove (move)
 import CommandTrad (buy, sell)
+import CommandAskM (ask)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
 import DataTypes (Direction, GameState, Player (pl_inventory))
 import Printer
@@ -45,6 +46,9 @@ cmdAppraise args = appraise $ head args
 -- [INTERFACE] - Look around command.
 cmdLook :: StateT GameState IO Bool
 cmdLook = look
+
+cmdAsk :: [String] -> StateT GameState IO Bool
+cmdAsk (name : topic : _) = ask name topic
 
 -- [INTERFACE] - Look at inventory command.
 cmdInventory :: StateT GameState IO Bool

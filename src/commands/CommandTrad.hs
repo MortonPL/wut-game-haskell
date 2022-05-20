@@ -1,4 +1,4 @@
-module CommandTrad (sell, buy) where
+module CommandTrad (sell, buy, toMerchant) where
 
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
 import Data.Function ((&))
@@ -16,11 +16,11 @@ updateCoins :: Inventory -> Int -> Inventory
 updateCoins invMap = update invMap "coin"
 
 toMerchant :: (Int, Int) -> Maybe Merchant
-toMerchant currentPosition =
+toMerchant position =
   case currentField of
     Island _ m -> Just m
     _ -> Nothing
-  where currentField = lv_tiles level !! fst currentPosition !! snd currentPosition
+  where currentField = lv_tiles level !! fst position !! snd position
 
 buys :: Merchant -> String -> Bool
 buys merchant itemName = case Map.lookup itemName (mc_buying merchant) of
