@@ -129,8 +129,7 @@ level =
 itemValues :: Map String Int
 itemValues =
   Map.fromList
-    [ ("balls", 1),
-      ("rum", 35),
+    [ ("rum", 35),
       ("gunpowder", 10),
       ("blunderbuss", 250),
       ("ration", 10),
@@ -142,8 +141,7 @@ itemValues =
 itemPirAtt :: Map String Int
 itemPirAtt =
   Map.fromList
-    [ ("balls", 40),
-      ("rum", 50),
+    [ ("rum", 50),
       ("gunpowder", 30),
       ("blunderbuss", 30),
       ("ration", 10),
