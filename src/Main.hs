@@ -1,6 +1,6 @@
 module Main where
 
-import Commands (cmdAppraise, cmdBuy, cmdHelp, cmdInvalid, cmdInventory, cmdLook, cmdMove, cmdQuit, cmdSell)
+import Commands (cmdAppraise, cmdAsk, cmdBuy, cmdHelp, cmdInvalid, cmdInventory, cmdLook, cmdMove, cmdQuit, cmdSell)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
@@ -42,6 +42,7 @@ handleCommand = do
     c | c `elem` ["s", "south"] -> mvs args c
     c | c == "buy" -> buy args c
     c | c == "sell" -> sel args c
+    c | c == "ask" -> ask args c
     c | c `elem` ["h", "help"] -> hlp args c
     c | c `elem` ["i", "inventory"] -> inv args c
     c | c `elem` ["q", "quit"] -> qit args c
@@ -60,6 +61,7 @@ handleCommand = do
     qit = noArgs cmdQuit
     ins = xArgs 1 cmdAppraise
     lok = noArgs cmdLook
+    ask = xArgs 2 cmdAsk
 
 -- [HELPER] - Validates argument count for 0-argument commands.
 noArgs :: StateT GameState IO Bool -> [String] -> String -> StateT GameState IO Bool
