@@ -20,7 +20,7 @@ splash = printLines splashScreen
         "            )___))___))___)",
         "           )____)____)_____)",
         "         _____|____|____|________",
-        "~~~~~~~~~\\   lvl 1 crook   \\   /~~~~~~~~~",
+        "~~~~~~~~~\\ lvl 2 scallywag \\   /~~~~~~~~~",
         "  ^^~^^ ^^^~~~~^^^^^~~^^^^^^^    ^^~~^~",
         "    ^^^  ~~   ^^^^     ^^~    ~~~~",
         " ~~      ~~^^      ^~^     ~~         ^~^",
@@ -45,7 +45,7 @@ help = do
   return True
   where
     helpScreen =
-      [ "Available commands are:",
+      [ "Available commands:",
         "",
         "h/help        -- see this list",
         "l/look        -- look around",
