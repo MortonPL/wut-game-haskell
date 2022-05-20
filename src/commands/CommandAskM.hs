@@ -8,7 +8,7 @@ import qualified Data.Map as Map
 import Level (itemValues)
 import Data.Map ((!))
 
-
+-- [INTERFACE] - Ask a merchant about something.
 ask :: String -> String -> StateT GameState IO Bool
 ask name topic = do
   state <- get
@@ -19,10 +19,12 @@ ask name topic = do
       liftIO $ println $ "Unfortunately, " ++ name ++ " is far away."
       return True
 
+-- [HELPER] - Buying/selling list entry.
 describeItem :: (String, Float) -> String
 describeItem (name, priceModifier) = "'" ++ name ++ "' for " ++ show (round priceModifier * basePrice) ++ " coins each"
   where basePrice = fromIntegral $ itemValues ! name
 
+-- [HELPER] - Asking pt. 2 (after it is determined that a merchant is available at the current position).
 askLocalMerchant :: Merchant -> String -> StateT GameState IO Bool
 askLocalMerchant merchant "offer" = do
   liftIO $ println $ mc_desc merchant

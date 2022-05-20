@@ -47,6 +47,7 @@ cmdAppraise args = appraise $ head args
 cmdLook :: StateT GameState IO Bool
 cmdLook = look
 
+-- [INTERFACE] - Ask a merchant command.
 cmdAsk :: [String] -> StateT GameState IO Bool
 cmdAsk (name : topic : _) = ask name topic
 
