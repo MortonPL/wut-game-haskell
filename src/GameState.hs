@@ -14,7 +14,7 @@ initGameState =
           Map.fromList
             [ ("mercenary", 1),
               ("coin", 50),
-              ("map_piece_1", 1),
-              ("map_piece_2", 1)
+              --("map_piece_1", 1),
+              --("map_piece_2", 1)
             ]
     }

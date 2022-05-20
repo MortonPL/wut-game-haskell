@@ -74,6 +74,6 @@ giveMapPiece :: StateT GameState IO ()
 giveMapPiece = do
   state <- get
   let inv = pl_inventory state
-  let ninv = update inv "map_piece_2" 1
+  let ninv = update inv "map_piece_1" 1
   put state {pl_inventory = ninv}
   liftIO $ println "In the wreckage you found a map piece!"
