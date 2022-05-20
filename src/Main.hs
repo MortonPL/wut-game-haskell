@@ -6,7 +6,7 @@ import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), eva
 
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
 import GameState (initGameState)
-import Printer (menu, println, splash)
+import Printer (println, splash)
 import System.IO (hFlush, stdout)
 
 -- [INTERFACE] - Entry point.
