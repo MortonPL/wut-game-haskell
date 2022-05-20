@@ -8,14 +8,14 @@ import GHC.Float
 import Random
 import Printer
 
--- [INTERFACE] - Attempts the pirate event
+-- [INTERFACE] - Attempts the pirate event.
 tryPirates :: StateT GameState IO ()
 tryPirates = do
   state <- get
   let attr = evaluate $ pl_inventory state
   when (attr > pirAttMin) (rollPirates attr)
 
--- [HELPER] - Random chance check for pirate event (based on player inventory value)
+-- [HELPER] - Chance for pirate event based on player inventory value.
 rollPirates :: Int -> StateT GameState IO ()
 rollPirates attr = do
   let t = int2Float (attr - pirAttMin) / int2Float (pirAttMax - pirAttMin)
@@ -23,7 +23,7 @@ rollPirates attr = do
   r <- randFloat
   when (r < p) piratesAttack
 
--- [HELPER] - Performs the pirate attack event
+-- [HELPER] - Performs the pirate attack event.
 piratesAttack :: StateT GameState IO ()
 piratesAttack = do
   state <- get
@@ -34,7 +34,7 @@ piratesAttack = do
     then defendFromPirates
     else loseToPirates
 
--- [HELPER] - Pirate attack gets defended
+-- [HELPER] - Pirate attack gets defended.
 defendFromPirates :: StateT GameState IO ()
 defendFromPirates = do
   state <- get
@@ -47,7 +47,7 @@ defendFromPirates = do
         "-1 mercenary"
       ]
 
--- [HELPER] - Pirate attack goes through
+-- [HELPER] - Pirate attack goes through.
 loseToPirates :: StateT GameState IO ()
 loseToPirates = do
   state <- get

@@ -1,11 +1,14 @@
 module Printer where
 
+-- [HELPER] - Displays a list of strings.
 printLines :: [String] -> IO ()
 printLines strs = putStr (unlines strs)
 
+-- [HELPER] - Displays a single string.
 println :: String -> IO ()
 println str = printLines [str]
 
+-- [HELPER] - Displays the spash screen.
 splash :: IO ()
 splash = printLines splashScreen
   where
@@ -29,6 +32,7 @@ splash = printLines splashScreen
         ""
       ]
 
+-- [HELPER] - Displays the main menu.
 menu :: IO ()
 menu = printLines menuScreen
   where
@@ -39,6 +43,7 @@ menu = printLines menuScreen
         "    quit  - Exit the game."
       ]
 
+-- [HELPER] - helper
 help :: IO Bool
 help = do
   printLines helpScreen
@@ -47,7 +52,7 @@ help = do
     helpScreen =
       [ "Available commands:",
         "",
-        "h/help        -- see this list",
+        "h/help        -- helper",
         "l/look        -- look around",
         "n/north       -- go north",
         "e/east        -- go east",

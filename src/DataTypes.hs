@@ -33,7 +33,7 @@ data Level = Level
 
 newtype Inventory = Inventory (Map String Int)
 
--- [SHOW]
+-- [SHOW] - Displays the inventory.
 instance Show Inventory where
   show (Inventory invMap) =
     if null items
@@ -42,12 +42,12 @@ instance Show Inventory where
     where
       items = filter countFilter (Map.toList invMap)
 
--- [HELPER] - Filters only items with positive counts
+-- [HELPER] - Filters only items with positive counts.
 countFilter :: (String, Int) -> Bool
 countFilter x =
   snd x > 0
 
--- [HELPER] - Generates a string for a single item type
+-- [HELPER] - Generates a string for a single item type.
 showItem :: (String, Int) -> String
 showItem (item, count) =
   " - " ++ show count ++ " of " ++ show item

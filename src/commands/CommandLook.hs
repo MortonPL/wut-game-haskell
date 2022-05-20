@@ -6,7 +6,7 @@ import DataTypes
 import Printer (printLines, println)
 import Random (randInt)
 
--- [INTERFACE] - Prints description of the surrounding 4 tiles
+-- [INTERFACE] - Prints description of the surrounding 4 tiles.
 look :: StateT GameState IO Bool
 look = do
   n <- lookAt North
@@ -16,7 +16,7 @@ look = do
   liftIO $ printLines [n, w, s, e]
   return True
 
--- [HELPER] - Prints the description of one direction
+-- [HELPER] - Prints the description of one direction.
 lookAt :: Direction -> StateT GameState IO String
 lookAt dir = do
   state <- get
@@ -26,7 +26,7 @@ lookAt dir = do
   t <- describeTile tile
   return $ t ++ " up " ++ show dir ++ "."
 
--- [HELPER] - Returns the description of the tile
+-- [HELPER] - Returns the description of the tile.
 describeTile :: Tile -> StateT GameState IO String
 describeTile tile =
   case tile of
@@ -35,7 +35,7 @@ describeTile tile =
     DeepWater -> describeDeep
     NoTile -> describeNoTile
 
--- [HELPER] - Island variants
+-- [HELPER] - Island variants.
 describeIsland :: StateT GameState IO String
 describeIsland = do
   r <- randInt (0, 2)
@@ -44,7 +44,7 @@ describeIsland = do
     1 -> return "You notice a landrats nest"
     _ -> return "Your barrelman sees land"
 
--- [HELPER] - Shallow water variants
+-- [HELPER] - Shallow water variants.
 describeShallow :: StateT GameState IO String
 describeShallow = do
   r <- randInt (0, 2)
@@ -53,7 +53,7 @@ describeShallow = do
     1 -> return "The weather is beautiful"
     _ -> return "Just the borring 'ol sea"
 
--- [HELPER] - Deep water variants
+-- [HELPER] - Deep water variants.
 describeDeep :: StateT GameState IO String
 describeDeep = do
   r <- randInt (0, 2)
@@ -62,7 +62,7 @@ describeDeep = do
     1 -> return "You see the ocean raging"
     _ -> return "You are gonna have a bad time"
 
--- [HELPER] - Border variants
+-- [HELPER] - Border variants.
 describeNoTile :: StateT GameState IO String
 describeNoTile = do
   r <- randInt (0, 2)
