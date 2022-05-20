@@ -61,6 +61,10 @@ textCannotSell itemName = "You can't sell '" ++ itemName ++ "' here."
 textCannotBuy :: String -> String
 textCannotBuy itemName = "You can't buy '" ++ itemName ++ "' here."
 
+-- [HELPER] - Error text for trying to sell/buy a negative amount of items.
+textNegAmount :: String
+textNegAmount = "Don't be silly."
+
 -- [INTERFACE] - Sells the specified amount of items (from player's inventory) to local merchant.
 sell :: String -> Int -> StateT GameState IO Bool
 sell itemName amount = do
@@ -83,6 +87,9 @@ sellToMerchant merchant itemName amount = do
   case amount of
     i | i > currentAmount -> do
       liftIO $ println $ textNotEnoughItems itemName
+      return True
+    i | i < 0 -> do
+      liftIO $ println textNegAmount
       return True
     _ -> do
       let basePrice = fromIntegral (itemValues ! itemName)
@@ -126,6 +133,9 @@ buyFromMerchant merchant itemName amount = do
   case totalPrice of
     i | i > currentMoney -> do
       liftIO $ println textNotEnoughMoney
+      return True
+    i | i < 0 -> do
+      liftIO $ println textNegAmount
       return True
     _ -> updateInvOnBuySucc itemName amount totalPrice
 

@@ -8,6 +8,7 @@ import CommandAskM (ask)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get, put), StateT)
 import DataTypes (Direction, GameState, Player (pl_inventory))
 import Printer
+import Text.Read (readMaybe)
 
 -- [INTERFACE] - The `help` command.
 cmdHelp :: StateT GameState IO Bool
@@ -27,17 +28,25 @@ cmdMove = move
 
 -- [INTERFACE] - Sell to a merchant command.
 cmdSell :: [String] -> StateT GameState IO Bool
-cmdSell args = sell itemName amount
+cmdSell args = case maybeAmount of
+    Just amount -> sell itemName amount
+    Nothing -> do
+      liftIO $ println "Command `sell` expects a string (item name) and an integer (amount)!"
+      return True
   where
     itemName = head args
-    amount = read (args !! 1)
+    maybeAmount = readMaybe (args !! 1)
 
 -- [INTERFACE] - Buy from a merchant command.
 cmdBuy :: [String] -> StateT GameState IO Bool
-cmdBuy args = buy itemName amount
+cmdBuy args = case maybeAmount of
+    Just amount -> buy itemName amount
+    Nothing -> do
+      liftIO $ println "Command `buy` expects a string (item name) and an integer (amount)!"
+      return True
   where
     itemName = head args
-    amount = read (args !! 1)
+    maybeAmount = readMaybe (args !! 1)
 
 -- [INTERFACE] - Appraise an item command.
 cmdAppraise :: [String] -> StateT GameState IO Bool
@@ -50,6 +59,9 @@ cmdLook = look
 -- [INTERFACE] - Ask a merchant command.
 cmdAsk :: [String] -> StateT GameState IO Bool
 cmdAsk (name : topic : _) = ask name topic
+cmdAsk _ = do
+  liftIO $ println "Command `ask` expects two strings (merchant name, topic)!"
+  return True
 
 -- [INTERFACE] - Look at inventory command.
 cmdInventory :: StateT GameState IO Bool
