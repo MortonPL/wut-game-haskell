@@ -23,6 +23,7 @@ executable ahoy
     , GameState
     , Level
     , Inventory
+    , Pirates
     , CommandMove
     , CommandTrad
     , CommandAppr

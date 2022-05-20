@@ -1,6 +1,6 @@
 module Main where
 
-import Commands (cmdAppraise, cmdBuy, cmdHelp, cmdInvalid, cmdLook, cmdMove, cmdQuit, cmdSell, showInventory)
+import Commands (cmdAppraise, cmdBuy, cmdHelp, cmdInvalid, cmdInventory, cmdLook, cmdMove, cmdQuit, cmdSell)
 import Control.Monad (when)
 import Control.Monad.State (MonadIO (liftIO), MonadState (get), StateT (..), evalStateT)
 import DataTypes (Direction (East, North, South, West), GameState, Player (pl_position))
@@ -8,23 +8,27 @@ import GameState (initGameState)
 import Printer (menu, println, splash)
 import System.IO (hFlush, stdout)
 
+-- [INTERFACE] - Entry point.
 main :: IO ()
 main = do
   Printer.splash
   Printer.menu
   liftIO (evalStateT gameLoop initGameState)
 
+-- [HELPER] - Performs the game loop until terminated by `quit` command.
 gameLoop :: StateT GameState IO ()
 gameLoop = do
   continue <- handleCommand
   when continue gameLoop
 
+-- [HELPER] - Awaits player input.
 readCommand :: IO String
 readCommand = do
   putStr "> "
   hFlush stdout
   getLine
 
+-- [HELPER] - Runs commands based on player input.
 handleCommand :: StateT GameState IO Bool
 handleCommand = do
   raw_input <- liftIO readCommand
@@ -51,12 +55,13 @@ handleCommand = do
     mvn = noArgs $ cmdMove North
     buy = xArgs 2 cmdBuy
     sel = xArgs 2 cmdSell
-    inv = noArgs showInventory
+    inv = noArgs cmdInventory
     hlp = noArgs cmdHelp
     qit = noArgs cmdQuit
     ins = xArgs 1 cmdAppraise
     lok = noArgs cmdLook
 
+-- [HELPER] - Validates argument count for 0-argument commands.
 noArgs :: StateT GameState IO Bool -> [String] -> String -> StateT GameState IO Bool
 noArgs func args cmd = do
   if null args
@@ -65,6 +70,7 @@ noArgs func args cmd = do
       liftIO $ println $ "Command `" ++ cmd ++ "` does not take any arguments!"
       return True
 
+-- [HELPER] - Validates argument count for N-argument commands.
 xArgs :: Int -> ([String] -> StateT GameState IO Bool) -> [String] -> String -> StateT GameState IO Bool
 xArgs expected func args cmd = do
   if length args == expected

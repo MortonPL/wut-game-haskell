@@ -6,6 +6,7 @@ import Inventory (count)
 import Printer (println)
 import Random (randInt)
 
+-- [INTERFACE] - Prints the description of specified item.
 appraise :: String -> StateT GameState IO Bool
 appraise item = do
   state <- get
@@ -15,6 +16,7 @@ appraise item = do
     else missingItem item
   return True
 
+-- [HELPER] - Prints a message when item is missing.
 missingItem :: String -> StateT GameState IO ()
 missingItem item = do
   r <- randInt (0, 2)
@@ -24,6 +26,7 @@ missingItem item = do
     _ -> liftIO $ println $ "You don't own `" ++ item ++ "`. Whetever it may be."
   return ()
 
+-- [HELPER] - Prints a message when item is present.
 describeItem :: String -> StateT GameState IO ()
 describeItem item = do
   case item of
