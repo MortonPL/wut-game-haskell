@@ -33,10 +33,10 @@ menu :: IO ()
 menu = printLines menuScreen
   where
     menuScreen =
-      [ "    save  - Make a new save file."
-      , "    load  - Load a saved file."
-      , "    help  - List all commands."
-      , "    quit  - Exit the game."
+      [ "    save  - Make a new save file.",
+        "    load  - Load a saved file.",
+        "    help  - List all commands.",
+        "    quit  - Exit the game."
       ]
 
 help :: IO Bool
@@ -45,15 +45,18 @@ help = do
   return True
   where
     helpScreen =
-      [ "Available commands are:"
-      , ""
-      , "h/help        -- to see this list"
-      , "n/north       -- to go north"
-      , "e/east        -- \"  \"  east"
-      , "s/south       -- \"  \"  south"
-      , "w/west        -- \"  \"  west"
-      , "sell          -- to sell items"
-      , "buy           -- to buy items"
-      , "q/quit        -- to end the game and quit"
-      , ""
+      [ "Available commands are:",
+        "",
+        "h/help        -- see this list",
+        "l/look        -- look around",
+        "n/north       -- go north",
+        "e/east        -- go east",
+        "s/south       -- go south",
+        "w/west        -- go west",
+        "i/inventory   -- check inventory",
+        "a/appraise    -- appraise items",
+        "sell          -- sell items",
+        "buy           -- buy items",
+        "q/quit        -- end the game and quit",
+        ""
       ]
