@@ -9,11 +9,15 @@ import Random (randInt)
 -- [INTERFACE] - Prints description of the surrounding 4 tiles.
 look :: StateT GameState IO Bool
 look = do
+  current <- describeCurrentTile
+  liftIO $ println "Your first mate reports:"
+  liftIO $ printLines $ map ("  - " ++) current
   n <- lookAt North
   e <- lookAt East
   w <- lookAt West
   s <- lookAt South
-  liftIO $ printLines [n, w, s, e]
+  liftIO $ println "Your foretopman reports:"
+  liftIO $ printLines $ map ("  - " ++) [n, w, s, e]
   return True
 
 -- [HELPER] - Prints the description of one direction.
@@ -70,3 +74,15 @@ describeNoTile = do
     0 -> return "You smell no money"
     1 -> return "No adventure awaits you"
     _ -> return "Nothing of interest"
+
+-- [HELPER] - Returns the description of the current tile.
+describeCurrentTile :: StateT GameState IO [String]
+describeCurrentTile = do
+  state <- get
+  tile <- getTile $ pl_position state
+  case tile of
+    Island name merchant -> return
+      ["You are on the " ++ name ++ ".", "Rumours are you can trade with " ++ mc_name merchant ++ " here. You gotta ask them."]
+    ShallowWater -> return ["You are on a calm sea."]
+    DeepWater -> return ["The sea is unsteady.", "Your ship could be blown away at any moment..."]
+    NoTile -> return []
